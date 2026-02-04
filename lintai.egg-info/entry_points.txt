@@ -1,2 +1,2 @@
 [console_scripts]
-lintai = cli:main
+lintai = cli:cli

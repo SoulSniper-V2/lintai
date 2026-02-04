@@ -29,7 +29,7 @@ dev = [
 ]
 
 [project.scripts]
-lintai = "cli:main"
+lintai = "cli:cli"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/lintai"
@@ -38,7 +38,7 @@ Issues = "https://github.com/yourusername/lintai/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["lintai*"]
+include = ["llm_validator*"]
 exclude = ["tests*", "docs*"]
 
 [tool.pytest.ini_options]
