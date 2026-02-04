@@ -9,6 +9,7 @@ back to GitHub Actions.
 import json
 import os
 import sys
+import yaml
 from pathlib import Path
 
 # Add the local lintai module to the path
@@ -19,16 +20,19 @@ from llm_validator.core import LLMValidator, Assertion, AssertionType, Validatio
 
 def load_assertions_from_config(config_path: str) -> list:
     """
-    Load assertions from a JSON configuration file.
+    Load assertions from a JSON or YAML configuration file.
     
     Args:
-        config_path: Path to the JSON config file
+        config_path: Path to the JSON/YAML config file
         
     Returns:
         List of Assertion objects
     """
     with open(config_path, 'r') as f:
-        config = json.load(f)
+        if config_path.endswith(('.yaml', '.yml')):
+            config = yaml.safe_load(f)
+        else:
+            config = json.load(f)
     
     assertions = []
     for ac in config.get('assertions', []):
@@ -150,8 +154,8 @@ def main():
         print(f"✓ Validation passed with score {result.score:.1f}%")
         sys.exit(0)
         
-    except json.JSONDecodeError as e:
-        print(f"::error::Invalid JSON in assertions config: {e}")
+    except (json.JSONDecodeError, yaml.YAMLError) as e:
+        print(f"::error::Invalid config format: {e}")
         sys.exit(1)
     except Exception as e:
         print(f"::error::Validation error: {e}")

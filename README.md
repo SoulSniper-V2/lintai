@@ -230,7 +230,22 @@ pytest tests/test_core.py -v
 
 ## 📈 CI/CD Integration
 
-### GitHub Actions
+### GitHub Marketplace Usage
+
+You can use LintAI directly as a GitHub Action in your workflows:
+
+```yaml
+- name: LintAI Validation
+  uses: lintai/lintai-validation@v1
+  with:
+    prompt: "Generate a python function to add two numbers"
+    output: "${{ steps.generate_code.outputs.result }}"
+    assertions-config: "validators/code_review.yaml"
+    pass-threshold: "80"
+    fail-on-warning: "false"
+```
+
+### GitHub Actions (Manual Setup)
 
 ```yaml
 name: Validate AI Outputs

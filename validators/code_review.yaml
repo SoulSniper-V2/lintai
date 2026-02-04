@@ -1,0 +1,39 @@
+name: code_review
+model: gpt-4
+assertions:
+  - name: has_tests
+    type: contains_text
+    params:
+      text: "test"
+      count: 1
+    weight: 0.15
+
+  - name: no_hardcoded_secrets
+    type: no_pattern
+    params:
+      pattern: "api_key|password|secret|token"
+    weight: 0.25
+
+  - name: reasonable_length
+    type: max_length
+    params:
+      max_tokens: 3000
+    weight: 0.10
+
+  - name: has_error_handling
+    type: regex_match
+    params:
+      pattern: "except|try|catch|error|Error"
+    weight: 0.20
+
+  - name: no_infinite_loops
+    type: no_pattern
+    params:
+      pattern: "while\\s+True\\s*:|while\\s+1\\s*:"
+    weight: 0.15
+
+  - name: proper_formatting
+    type: regex_match
+    params:
+      pattern: "\\n"
+    weight: 0.15

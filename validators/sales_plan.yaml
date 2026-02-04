@@ -1,0 +1,27 @@
+name: sales_plan
+model: gpt-4
+assertions:
+  - name: has_intro
+    type: contains_text
+    params:
+      text: "Introduction"
+    weight: 0.1
+
+  - name: has_steps
+    type: contains_text
+    params:
+      text: "Step"
+      count: 3
+    weight: 0.3
+
+  - name: professional_tone
+    type: no_pattern
+    params:
+      pattern: "dummy|placeholder|lazy"
+    weight: 0.2
+
+  - name: reasonable_length
+    type: min_length
+    params:
+      min_words: 50
+    weight: 0.2
