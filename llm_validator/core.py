@@ -7,36 +7,10 @@ import json
 import hashlib
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any, Callable
-from enum import Enum
 from abc import ABC, abstractmethod
+import yaml
 
-
-class AssertionType(Enum):
-    """Types of assertions available for validation."""
-    MAX_LENGTH = "max_length"
-    MIN_LENGTH = "min_length"
-    CONTAINS_TEXT = "contains_text"
-    NO_PATTERN = "no_pattern"
-    REGEX_MATCH = "regex_match"
-    SENTIMENT = "sentiment"
-    JSON_VALID = "json_valid"
-    KEYWORD_COUNT = "keyword_count"
-    CUSTOM = "custom"
-
-
-@dataclass
-class Assertion:
-    """A single validation assertion."""
-    name: str
-    type: AssertionType
-    params: Dict[str, Any]
-    weight: float = 1.0
-    enabled: bool = True
-    message: str = ""
-    
-    def __post_init__(self):
-        if isinstance(self.type, str):
-            self.type = AssertionType(self.type)
+from .assertions import Assertion, AssertionType
 
 
 @dataclass
@@ -389,7 +363,10 @@ class LLMValidator:
             ValidationResult
         """
         with open(config_path) as f:
-            config = json.load(f) if config_path.endswith(".json") else json.load(f)
+            if config_path.endswith(('.yaml', '.yml')):
+                config = yaml.safe_load(f)
+            else:
+                config = json.load(f)
         
         assertions = []
         for ac in config.get("assertions", []):

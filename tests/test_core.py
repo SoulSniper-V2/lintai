@@ -54,7 +54,7 @@ class TestNoPatternAssertion:
     def test_no_prohibited_pattern(self):
         validator = LLMValidator()
         assertion = Assertion.no_pattern("no_secrets", pattern=r"api_key|password|secret")
-        result = validator.validate("prompt", "Here is a normal response without secrets", [assertion])
+        result = validator.validate("prompt", "Here is a normal response without sensitive data", [assertion])
         
         assert result.passed == True
         assert "no_secrets" not in result.failed_assertions
@@ -112,7 +112,7 @@ class TestValidationResult:
         assert high_result.passed == True
         
         # Low score  
-        low_result = validator.validate("p", "x" * 10000, [Assertion.max_length("t", max_tokens=5)])
+        low_result = validator.validate("p", "x " * 100, [Assertion.max_length("t", max_tokens=5)])
         assert low_result.passed == False
 
 
