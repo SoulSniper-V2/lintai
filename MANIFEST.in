@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+recursive-include lintai *.py
+recursive-include lintai *.toml
+recursive-include lintai *.md
+recursive-include lintai *.txt

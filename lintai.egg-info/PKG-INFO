@@ -1,0 +1,313 @@
+Metadata-Version: 2.4
+Name: lintai
+Version: 0.1.0
+Summary: AI-powered linting tool for code quality and validation
+Home-page: https://github.com/yourusername/lintai
+Author: Arush Kali
+Author-email: Arush Kali <warush23@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/lintai
+Project-URL: Repository, https://github.com/yourusername/lintai
+Project-URL: Issues, https://github.com/yourusername/lintai/issues
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: requests>=2.28.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: build>=1.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# LintAI - AI Output Testing & Validation Framework
+
+A production-ready framework for validating AI/LLM outputs against user-defined assertions, confidence scoring, and edge case testing.
+
+![LLM Validator](https://via.placeholder.com/800x200/1a1a2e/0ea5e9?text=LLM+Validator)
+
+## 🎯 Features
+
+- **Assertion-Based Validation**: Define expected behavior with simple rules
+- **Confidence Scoring**: Get quantified trust metrics for outputs
+- **Edge Case Testing**: Systematically test boundary conditions
+- **Multi-Model Support**: Works with OpenAI, Anthropic, Gemini, local LLMs
+- **Regression Tracking**: Track validation scores over time
+- **CI/CD Integration**: Run validations in pipelines
+
+## 🚀 Quick Start
+
+### Python API
+
+```python
+from llm_validator import LLMValidator, Assertion, AssertionType
+
+# Initialize validator
+validator = LLMValidator(
+    model="gpt-4",
+    api_key="your-key"
+)
+
+# Define assertions
+assertions = [
+    Assertion(
+        name="max_length",
+        type=AssertionType.MAX_LENGTH,
+        params={"max_tokens": 500},
+        weight=0.3
+    ),
+    Assertion(
+        name="no_profanity",
+        type=AssertionType.NO_PATTERN,
+        params={"pattern": r"(?i)badword|offensive"},
+        weight=0.5
+    ),
+    Assertion(
+        name="contains_action_plan",
+        type=AssertionType.CONTAINS_TEXT,
+        params={"text": "step 1", "count": 1},
+        weight=0.2
+    )
+]
+
+# Validate output
+result = validator.validate(
+    prompt="Create a plan to increase sales",
+    output="Here is a step by step plan...",
+    assertions=assertions
+)
+
+print(f"Confidence Score: {result.score}/100")
+print(f"Passed: {result.passed}")
+print(f"Failed: {result.failed_assertions}")
+```
+
+### CLI Usage
+
+```bash
+# Run validation from config
+llm-validate --config validators/sales_plan.yaml
+
+# Quick test
+llm-validate --prompt "Summarize this" --output "The text says..." --rules "max_tokens:100"
+
+# Batch validation
+llm-validate --input test_cases.jsonl --output results.jsonl
+```
+
+### Web Dashboard
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Access at http://localhost:5173
+
+## 📁 Project Structure
+
+```
+llm-validator/
+├── llm_validator/
+│   ├── __init__.py
+│   ├── core.py           # Main validation logic
+│   ├── assertions.py     # Assertion types
+│   ├── models.py         # Data models
+│   └── providers.py      # LLM provider integration
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   └── components/
+│   ├── package.json
+│   └── vite.config.js
+├── tests/
+│   ├── test_core.py
+│   └── test_assertions.py
+├── validators/           # Example validation configs
+├── README.md
+└── requirements.txt
+```
+
+## 🛠️ Assertion Types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `MAX_LENGTH` | Output within token/char limit | `max_tokens: 1000` |
+| `MIN_LENGTH` | Output meets minimum length | `min_words: 50` |
+| `CONTAINS_TEXT` | Output has required text | `text: "step 1"` |
+| `NO_PATTERN` | Output doesn't match pattern | `pattern: "error\|fail"` |
+| `REGEX_MATCH` | Output matches regex | `pattern: r"^\d+\."` |
+| `SENTIMENT` | Output sentiment check | `min_positive: 0.6` |
+| `JSON_VALID` | Output is valid JSON | `schema: ./schema.json` |
+| `KEYWORD_COUNT` | Keywords present | `keywords: ["AI", "ML"]` |
+| `CUSTOM` | Python function validation | `function: my_validator.py` |
+
+## 📊 Confidence Scoring
+
+The validator calculates a weighted confidence score:
+
+```
+Confidence Score = Σ(passed_weight) / Σ(total_weight) × 100
+```
+
+Individual assertion results:
+- ✅ **PASS**: Assertion met
+- ❌ **FAIL**: Assertion not met  
+- ⚠️ **WARN**: Assertion partially met (with penalty)
+
+## 🎨 Example Validators
+
+### Code Review Validator
+
+```yaml
+name: code_review
+model: gpt-4
+assertions:
+  - name: has_tests
+    type: CONTAINS_TEXT
+    params: { text: "test" }
+    weight: 0.3
+  
+  - name: no_hardcoded_secrets
+    type: NO_PATTERN
+    params: { pattern: "api_key|password|secret" }
+    weight: 0.4
+  
+  - name: reasonable_length
+    type: MAX_LENGTH
+    params: { max_tokens: 2000 }
+    weight: 0.2
+  
+  - name: has_error_handling
+    type: REGEX_MATCH
+    params: { pattern: "except|try|catch" }
+    weight: 0.1
+```
+
+### Customer Email Validator
+
+```yaml
+name: customer_email
+model: claude-3-opus
+assertions:
+  - name: professional_tone
+    type: SENTIMENT
+    params: { min_positive: 0.3, max_negative: 0.2 }
+    weight: 0.3
+  
+  - name: has_greeting
+    type: CONTAINS_TEXT
+    params: { text: "Dear|Hello|Hi" }
+    weight: 0.1
+  
+  - name: has_signature
+    type: CONTAINS_TEXT
+    params: { text: "Sincerely|Best|Thanks" }
+    weight: 0.1
+  
+  - name: no_pii
+    type: NO_PATTERN
+    params: { pattern: "\\d{3}-\\d{2}-\\d{4}" }  # SSN pattern
+    weight: 0.5
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=...
+GOOGLE_API_KEY=...
+```
+
+### Provider Selection
+
+```python
+from llm_validator.providers import OpenAIProvider, AnthropicProvider, LocalProvider
+
+# OpenAI
+validator = LLMValidator(provider=OpenAIProvider(model="gpt-4"))
+
+# Anthropic
+validator = LLMValidator(provider=AnthropicProvider(model="claude-3-opus"))
+
+# Local/Ollama
+validator = LLMValidator(provider=LocalProvider(model="llama2"))
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run with coverage
+pytest --cov=llm_validator tests/
+
+# Run specific test
+pytest tests/test_core.py -v
+```
+
+## 📈 CI/CD Integration
+
+### GitHub Actions
+
+```yaml
+name: Validate AI Outputs
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install
+        run: pip install llm-validator
+      - name: Run Validation
+        run: |
+          llm-validate \
+            --config validators/code_review.yaml \
+            --output validation_results.json
+      - name: Check Score
+        run: |
+          if [ $(jq '.score' validation_results.json) -lt 80 ]; then
+            echo "Score below threshold!"
+            exit 1
+          fi
+```
+
+## 🎯 Use Cases
+
+1. **Production AI Safety**: Validate outputs before showing to users
+2. **Code Review Automation**: Check AI-generated code for quality
+3. **Content Moderation**: Ensure outputs meet guidelines
+4. **Customer Support**: Validate response quality
+5. **RAG Evaluation**: Test retrieval-augmented generation accuracy
+6. **Model Comparison**: Compare output quality across models
+
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create a feature branch
+3. Add your assertion type
+4. Submit a PR
+
+## 📄 License
+
+MIT License - Build, validate, ship with confidence!
+
+---
+
+**Never deploy AI without validation.** 🛡️

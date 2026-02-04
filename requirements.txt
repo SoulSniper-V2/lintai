@@ -1,5 +1,10 @@
-llm-validator==1.0.0
-pydantic>=2.0.0
-rich>=13.0.0
-pyyaml>=6.0
-click>=8.0.0
+# LintAI GitHub Action Dependencies
+# These are the Python packages needed to run the validation action
+
+# Core validation framework (using local module)
+# llm-validator>=1.0.0  # Uncomment and set version if using PyPI package
+
+# For JSON/YAML parsing (if needed in future)
+# pyyaml>=6.0
+
+# GitHub Actions outputs are set via stdout (no additional dependencies needed)

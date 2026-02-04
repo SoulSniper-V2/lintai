@@ -1,0 +1,2 @@
+[console_scripts]
+lintai = cli:main
