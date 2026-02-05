@@ -1,6 +1,6 @@
 name: 'LintAI Validation'
-description: 'Validates LLM outputs using configurable assertions'
-author: 'LintAI'
+description: 'Validates LLM outputs using configurable assertions with confidence scoring'
+author: 'Arush Kali'
 
 inputs:
   prompt:
@@ -10,7 +10,7 @@ inputs:
     description: 'The LLM output to validate'
     required: true
   assertions-config:
-    description: 'Path to assertions configuration file (JSON)'
+    description: 'Path to assertions configuration file (JSON/YAML)'
     required: true
   pass-threshold:
     description: 'Minimum score threshold for passing (0-100)'
@@ -24,45 +24,18 @@ inputs:
 outputs:
   passed:
     description: 'Whether validation passed (true/false)'
-    value: ${{ steps.validate.outputs.passed }}
   score:
     description: 'Validation confidence score (0-100)'
-    value: ${{ steps.validate.outputs.score }}
   failed-assertions:
-    description: 'List of failed assertions'
-    value: ${{ steps.validate.outputs.failed-assertions }}
-  assertion-results:
-    description: 'Detailed assertion results (JSON)'
-    value: ${{ steps.validate.outputs.assertion-results }}
+    description: 'Number of failed assertions'
+  warnings-count:
+    description: 'Number of warnings'
 
 runs:
-  using: "composite"
-  steps:
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    
-    - name: Install Dependencies
-      shell: bash
-      run: |
-        pip install -r ${{ github.action_path }}/requirements.txt
-        # Install the local package in editable mode if we are in the repo, 
-        # or assume dependencies are sufficient.
-        # Since this action is inside the repo, we need to make sure python can find the module.
-        # We'll set PYTHONPATH to include the action path.
+  using: "node20"
+  main: "dist/index.js"
 
-    - name: Run Validation
-      id: validate
-      shell: bash
-      env:
-        PYTHONPATH: ${{ github.action_path }}
-        INPUT_PROMPT: ${{ inputs.prompt }}
-        INPUT_OUTPUT: ${{ inputs.output }}
-        INPUT_ASSERTIONS-CONFIG: ${{ inputs.assertions-config }}
-        INPUT_PASS-THRESHOLD: ${{ inputs.pass-threshold }}
-        INPUT_FAIL-ON-WARNING: ${{ inputs.fail-on-warning }}
-      run: python ${{ github.action_path }}/entrypoint.py
 branding:
   icon: 'check-circle'
   color: 'green'
+

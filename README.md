@@ -31,6 +31,76 @@ pip install -e .
 - 🔄 **CI/CD Integration** - Run validations in GitHub Actions pipelines
 - 🚀 **Auto-Release to PyPI** - Tags automatically publish to PyPI
 
+## 🚀 GitHub Action
+
+LintAI is also available as a **GitHub Marketplace Action** for CI/CD pipelines:
+
+```yaml
+name: Validate AI Output
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Validate LLM Output
+        uses: SoulSniper-V2/lintai@v0.1
+        with:
+          prompt: "Summarize this document"
+          output: "${{ steps.generate.outputs.result }}"
+          assertions-config: "./assertions.json"
+          pass-threshold: 80
+```
+
+### Example Assertions Config (`assertions.json`)
+
+```json
+{
+  "assertions": [
+    {
+      "name": "max_length",
+      "type": "MAX_LENGTH",
+      "params": { "max_chars": 1000 },
+      "weight": 0.3
+    },
+    {
+      "name": "contains_steps",
+      "type": "CONTAINS_TEXT",
+      "params": { "text": "step 1" },
+      "weight": 0.5
+    },
+    {
+      "name": "no_profanity",
+      "type": "NO_PATTERN",
+      "params": { "pattern": "badword|offensive" },
+      "weight": 0.2
+    }
+  ]
+}
+```
+
+### Action Inputs
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `prompt` | Yes | - | Original prompt sent to LLM |
+| `output` | Yes | - | LLM output to validate |
+| `assertions-config` | Yes | - | Path to JSON assertions config |
+| `pass-threshold` | No | 70 | Minimum score to pass (0-100) |
+| `fail-on-warning` | No | false | Fail if any warnings |
+
+### Action Outputs
+
+| Output | Description |
+|--------|-------------|
+| `passed` | Whether validation passed (true/false) |
+| `score` | Confidence score (0-100) |
+| `failed-assertions` | Number of failed assertions |
+| `warnings-count` | Number of warnings |
+
 ## 🚀 Quick Start
 
 ### CLI Usage

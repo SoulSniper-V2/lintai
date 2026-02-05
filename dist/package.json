@@ -1,0 +1,13 @@
+{
+  "name": "lintai-validation",
+  "version": "0.1.0",
+  "description": "Validate LLM outputs using configurable assertions",
+  "main": "index.js",
+  "author": "Arush Kali",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1"
+  },
+  "keywords": ["github-actions", "ai", "llm", "validation", "testing"],
+  "license": "MIT"
+}
