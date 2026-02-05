@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="llm-validator",
-    version="0.1.0",
+    version="0.1.1",
     description="AI-powered linting tool for code quality and validation",
     author="Arush Kali",
     author_email="warush23@gmail.com",
