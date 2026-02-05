@@ -1,8 +1,8 @@
 Metadata-Version: 2.4
-Name: lintai
+Name: llm-validator
 Version: 0.1.0
 Summary: AI-powered linting tool for code quality and validation
-Home-page: https://github.com/yourusername/lintai
+Home-page: https://github.com/SoulSniper-V2/lintai
 Author: Arush Kali
 Author-email: Arush Kali <warush23@gmail.com>
 License: MIT

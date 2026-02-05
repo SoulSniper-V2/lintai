@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="lintai",
+    name="llm-validator",
     version="0.1.0",
     description="AI-powered linting tool for code quality and validation",
     author="Arush Kali",
     author_email="warush23@gmail.com",
-    url="https://github.com/yourusername/lintai",
+    url="https://github.com/SoulSniper-V2/lintai",
     packages=find_packages(exclude=["tests*"]),
     python_requires=">=3.8",
     install_requires=[
@@ -24,12 +24,12 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "lintai=cli:main",
+            "llm-validate=cli:cli",
         ],
     },
     include_package_data=True,
     package_data={
-        "lintai": ["py.typed"],
+        "llm_validator": ["py.typed"],
     },
     classifiers=[
         "Development Status :: 3 - Alpha",
