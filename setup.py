@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "llm-validate=cli:cli",
+            "lintai=llm_validator.cli:cli",
         ],
     },
     include_package_data=True,

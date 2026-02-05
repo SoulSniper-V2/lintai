@@ -29,12 +29,12 @@ dev = [
 ]
 
 [project.scripts]
-lintai = "cli:cli"
+lintai = "llm_validator.cli:cli"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/lintai"
-Repository = "https://github.com/yourusername/lintai"
-Issues = "https://github.com/yourusername/lintai/issues"
+Homepage = "https://github.com/SoulSniper-V2/lintai"
+Repository = "https://github.com/SoulSniper-V2/lintai"
+Issues = "https://github.com/SoulSniper-V2/lintai/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

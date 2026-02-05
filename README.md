@@ -1,21 +1,50 @@
 # LintAI - AI Output Testing & Validation Framework
 
+[![PyPI Version](https://img.shields.io/pypi/v/llm-validator)](https://pypi.org/project/llm-validator/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/llm-validator)](https://pypi.org/project/llm-validator/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI/CD](https://img.shields.io/github/actions/workflow/status/SoulSniper-V2/lintai/ci.yml?label=CI/CD)](https://github.com/SoulSniper-V2/lintai/actions)
+
 A production-ready framework for validating AI/LLM outputs against user-defined assertions, confidence scoring, and edge case testing.
 
-![LLM Validator](https://via.placeholder.com/800x200/1a1a2e/0ea5e9?text=LLM+Validator)
+## 📦 Installation
+
+### From PyPI (Recommended)
+```bash
+pip install llm-validator
+```
+
+### From Source
+```bash
+git clone https://github.com/SoulSniper-V2/lintai.git
+cd lintai
+pip install -e .
+```
 
 ## 🎯 Features
 
-- **Assertion-Based Validation**: Define expected behavior with simple rules
-- **Confidence Scoring**: Get quantified trust metrics for outputs
-- **Edge Case Testing**: Systematically test boundary conditions
-- **Multi-Model Support**: Works with OpenAI, Anthropic, Gemini, local LLMs
-- **Regression Tracking**: Track validation scores over time
-- **CI/CD Integration**: Run validations in pipelines
+- ✅ **Assertion-Based Validation** - Define expected behavior with simple rules
+- 📊 **Confidence Scoring** - Get quantified trust metrics for outputs  
+- 🧪 **Edge Case Testing** - Systematically test boundary conditions
+- 🤖 **Multi-Model Support** - Works with OpenAI, Anthropic, Gemini, local LLMs
+- 📈 **Regression Tracking** - Track validation scores over time
+- 🔄 **CI/CD Integration** - Run validations in GitHub Actions pipelines
+- 🚀 **Auto-Release to PyPI** - Tags automatically publish to PyPI
 
 ## 🚀 Quick Start
 
-### Python API
+### CLI Usage
+
+```bash
+# Initialize a validation config
+lintai init-config
+
+# Validate with a config file
+lintai validate --config validators/my_config.yaml
+
+# Batch validation from JSONL
+lintai batch --input test_cases.jsonl --output results.jsonl
+```
 
 ```python
 from llm_validator import LLMValidator, Assertion, AssertionType
@@ -274,6 +303,38 @@ jobs:
 2. Create a feature branch
 3. Add your assertion type
 4. Submit a PR
+
+## 🔄 Automated Releases
+
+This project uses **GitHub Actions** for CI/CD:
+
+| Workflow | Description |
+|----------|-------------|
+| **Test** | Runs pytest on every push/PR |
+| **Build** | Builds PyPI package on every push |
+| **Publish** | Auto-publishes to PyPI when a **git tag** is pushed |
+
+### How to Release
+
+```bash
+# Make changes, commit
+git add -A
+git commit -m "Description of changes"
+
+# Create a version tag (follows semver)
+git tag v0.1.1
+
+# Push tag to trigger PyPI release
+git push origin main
+git push origin v0.1.1
+```
+
+The CI workflow will:
+1. Run tests
+2. Build the package
+3. Publish to PyPI automatically
+
+**Note:** Requires `PYPI_API_TOKEN` secret in GitHub repo settings.
 
 ## 📄 License
 

@@ -5,7 +5,9 @@ pyproject.toml
 setup.py
 lintai/__init__.py
 llm_validator/__init__.py
+llm_validator/__main__.py
 llm_validator/assertions.py
+llm_validator/cli.py
 llm_validator/core.py
 llm_validator/models.py
 llm_validator.egg-info/PKG-INFO

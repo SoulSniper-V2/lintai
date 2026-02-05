@@ -6,9 +6,9 @@ Home-page: https://github.com/SoulSniper-V2/lintai
 Author: Arush Kali
 Author-email: Arush Kali <warush23@gmail.com>
 License: MIT
-Project-URL: Homepage, https://github.com/yourusername/lintai
-Project-URL: Repository, https://github.com/yourusername/lintai
-Project-URL: Issues, https://github.com/yourusername/lintai/issues
+Project-URL: Homepage, https://github.com/SoulSniper-V2/lintai
+Project-URL: Repository, https://github.com/SoulSniper-V2/lintai
+Project-URL: Issues, https://github.com/SoulSniper-V2/lintai/issues
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
